@@ -55,11 +55,19 @@ public class SingularlyLinkedList<E> implements List<E> {
         //Set head as next element
         Node newNode = new Node<E>(e, head);
 
+        Node oldHead = head;
+
         //NEW NODE =CONNECTS TO=> HEAD
-        newNode.setNext(head);
+        newNode.setNext(oldHead);
 
         //Update head
         head = newNode;
+
+        //If there was no tail before, add one
+        if(tail == null && this.size == 1)
+        {
+            tail = oldHead;
+        }
 
         //Increment size
         size++;
@@ -67,24 +75,22 @@ public class SingularlyLinkedList<E> implements List<E> {
 
     void addLast(E e)
     {
-        if(this.isEmpty()) {
-            head = new Node<E>(e, null);
-            System.out.print('x');
-        }
-        else if(tail == null) {
-            tail = new Node<E>(e, null);
-            System.out.print('y');
-        }
-        else {
-            Node newNode = new Node<E>(e, null);
-            tail.setNext(newNode);
+        //Create a new node for our element
+        //Set head as next element
+        Node newNode = new Node<E>(e, head);
+
+        if(tail == null) {
             tail = newNode;
-            System.out.print('z');
+            return;
         }
 
-        //Increment size
-        size++;
+        Node tmpNode = tail;
 
+        tail.setNext(newNode);
+
+        tail = newNode;
+
+        size++;
     }
 
     void removeFirst()
@@ -181,6 +187,9 @@ public class SingularlyLinkedList<E> implements List<E> {
 
     public E get(int indx)
     {
+        if(indx > (size - 1))
+            throw new IllegalArgumentException("Invalid Index");
+
         curr = head;
 
         //Search for element
@@ -233,9 +242,10 @@ public class SingularlyLinkedList<E> implements List<E> {
             if(curr.getElement() != null)
                  System.out.print(curr.getElement());
 
-            if(curr.getNext() != null)
+            if(curr.getNext() != null) {
                 System.out.print(" => ");
                 curr = curr.getNext();
+            }
         }
     }
 
@@ -243,11 +253,6 @@ public class SingularlyLinkedList<E> implements List<E> {
     {
         SingularlyLinkedList<Integer> x = new SingularlyLinkedList<>();
 
-        x.addFirst(1);
-        x.print();
-
-        x.addLast(2);
-        x.print();
 
     }
 
