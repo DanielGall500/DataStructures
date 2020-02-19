@@ -126,27 +126,61 @@ public class SingularlyLinkedList<E> implements List<E> {
 
     public void add(int indx, E e)
     {
-        //Create new node for element e
-        Node newNode = new Node<E>(e, null);
+        //DOUBLE CHECK WHAT ADD ACTUALLY DOES
 
-        //Node to store the node previous
-        //to the current one
-        Node prev = new Node<E>(null, null);
-
-        curr = head;
-
-        for(int i = 0; i < indx; i++)
+        if (indx == 0)
+            init_head(e);
+        else
         {
-            prev = curr;
-            curr = curr.getNext();
+            //Create new node for element e
+            Node newNode = new Node<E>(e, null);
+
+            //Node to store the node previous
+            //to the current one
+            Node prev = new Node<E>(null, null);
+
+            curr = head;
+
+            for(int i = 0; i < indx; i++)
+            {
+                prev = curr;
+                curr = curr.getNext();
+            }
+
+            //PREVIOUS NODE -> NEW NODE
+            prev.setNext(newNode);
+
+            //NEW NODE -> CURRENT NODE
+            newNode.setNext(curr);
+
+            //Increment Size
+            size++;
         }
 
-        //PREVIOUS NODE -> NEW NODE
-        prev.setNext(newNode);
+    }
 
-        //NEW NODE -> CURRENT NODE
-        newNode.setNext(curr);
+    private void init_head(E e)
+    {
+        if(size != 0)
+            throw new RuntimeException("Cannot Initialise");
 
+        Node tmpNode = new Node<E>(e, tail);
+        head = tmpNode;
+
+        size++;
+    }
+
+    private void init_tail(E e)
+    {
+        if(size != 1)
+            throw new RuntimeException("Cannot Initialise");
+
+        Node tmpNode = new Node<E>(e, null);
+        tail = tmpNode;
+
+        head.setNext(tail);
+
+        size++;
     }
 
     public void remove(int indx)
@@ -192,6 +226,8 @@ public class SingularlyLinkedList<E> implements List<E> {
 
         curr = head;
 
+        System.out.println();
+
         //Search for element
         for(int i = 0; i < indx; i++)
         {
@@ -233,25 +269,14 @@ public class SingularlyLinkedList<E> implements List<E> {
 
     public int size() { return this.size; }
 
-    public void print()
-    {
-        curr = head;
-
-        for(int i = 0; i < this.size; i++)
-        {
-            if(curr.getElement() != null)
-                 System.out.print(curr.getElement());
-
-            if(curr.getNext() != null) {
-                System.out.print(" => ");
-                curr = curr.getNext();
-            }
-        }
-    }
-
     public static void main(String[] args)
     {
         SingularlyLinkedList<Integer> x = new SingularlyLinkedList<>();
+
+        x.add(0, 10);
+        System.out.println(x.get(0));
+
+        x.add(1, 12);
 
 
     }
